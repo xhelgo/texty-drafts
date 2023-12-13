@@ -1,0 +1,231 @@
+﻿/* 5 */
+@media (min-width: 1300px) {
+
+  .container {
+    margin: 70px auto;
+    width: 100%;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  
+  .chart:not(:nth-child(1)) {
+    .y-ticks {
+      display: none;
+    }
+    
+    .x-axis-label {
+      display: none;
+    }
+    
+    .y-axis-label {
+      display: none;
+    }
+    
+    .suma-text,
+    .podatok-text {
+      visibility: hidden;
+    }
+  }
+}
+
+/* 4 + 1 */
+@media (min-width: 1140px) and (max-width: 1299px) {
+
+  .container {
+    margin: 70px auto;
+    width: 100%;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  
+  .chart:not(:nth-child(1)):not(:nth-child(5)) {
+    .y-ticks {
+      display: none;
+    }
+    
+    .x-axis-label {
+      display: none;
+    }
+    
+    .y-axis-label {
+      display: none;
+    }
+  }
+
+}
+
+/* 3 + 2 */
+@media (min-width: 865px) and (max-width: 1139px) {
+  .container {
+    margin: 40px auto;
+    width: 100%;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  
+  .chart:not(:nth-child(1)):not(:nth-child(4)) {
+    .y-ticks {
+      display: none;
+    }
+    
+    .x-axis-label {
+      display: none;
+    }
+    
+    .y-axis-label {
+      display: none;
+    }
+    
+    .suma-text,
+    .podatok-text {
+      visibility: hidden;
+    }
+  }
+
+}
+
+/* 2 + 2 + 1 */
+@media (min-width: 600px) and (max-width: 864px) {
+  .container {
+    margin: 40px auto;
+    width: 100%;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  
+  .chart:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(5)) {
+    .y-ticks {
+      display: none;
+    }
+    
+    .x-axis-label {
+      display: none;
+    }
+    
+    .y-axis-label {
+      display: none;
+    }
+    
+    .suma-text,
+    .podatok-text {
+      visibility: hidden;
+    }
+  }
+
+}
+
+/* 1 + 1 + 1 + 1 + 1 */
+@media (max-width: 599px) {
+  .container {
+    margin: 10px auto;
+    width: 100%;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+
+.chart:not(:nth-child(1)) {
+  .suma-text,
+  .podatok-text {
+    visibility: hidden;
+  }
+}
+
+
+.tick line {
+  display: none;
+}
+
+.y-axis-label,
+.x-axis-label {
+  font-size: 12px;
+  font-family: Inter;
+}
+
+.x-axis-label {
+  background-color: white;
+}
+
+.title {
+  fill: rgb(103, 82, 48);
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.suma-text,
+.podatok-text {
+  font-family: Inter;
+  font-size: 14px;
+}
+
+.suma-numbers,
+.podatok-numbers {
+  fill: rgb(237, 34, 56) !important;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+
+.input {
+  position: sticky;
+  top: 0;
+  background-color: white;
+}
+
+#inputField {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+}
+
+#inputField label {
+  order: 1;
+  margin-left: 30px;
+  margin-bottom: 5px;
+  margin-top: 10px;
+
+  color: rgb(103, 82, 48);
+
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 450;
+}
+
+#inputField input[type="text"] {
+  order: 2;
+  margin-left: 30px;
+  margin-bottom: 15px;
+
+  height: 30px;
+  padding-left: 5px;
+
+  border: 1.5px solid rgb(103, 82, 48);
+  background-color: transparent;
+
+  color: rgb(237, 34, 56);
+  font-family: Inter;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* #inputField input[type="submit"] {
+  order: 3;
+} */
