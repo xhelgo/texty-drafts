@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <title>D3.js App</title>
+    <title>Taxes Dashboard</title>
     <script src="https://d3js.org/d3.v4.js"></script>
     <link rel="stylesheet" type="text/css" href="styles.css">
 
@@ -16,19 +16,28 @@
     <div class="input">
       <form id="inputField">
         <label for="incomeInput">ВВЕДІТЬ ЗП:</label>
-        <input type="text" id="incomeInput" name="incomeInput" placeholder="10000">
+        <input type="text" id="incomeInput" name="incomeInput" placeholder="10000" pattern="^([5-9]\d{3}|[1-9]\d{4,5}|1000000)$" title="Будь ласка, введіть зарплату в межах 5000–1000000">
         <!-- <input type="submit" value="OK"> -->
       </form>
     </div>
 
     <div class="charts">
 
-      <div class="chart first" id="my_dataviz1"></div>
-      <div class="chart" id="my_dataviz2"></div>
-      <div class="chart" id="my_dataviz3"></div>
-      <div class="chart" id="my_dataviz4"></div>
-      <div class="chart" id="my_dataviz5"></div>
-      <div class="chart" id="my_dataviz6"></div>
+      <div class="chart" id="fop1">
+        <div class="limit-message">Не застосовується. Максимальна річна зарплата цієї категорії: 1118900</div>
+      </div>
+      <div class="chart" id="fop2">
+        <div class="limit-message">Не застосовується. Максимальна річна зарплата цієї категорії: 5587800</div>
+      </div>
+      <div class="chart" id="fop3">
+        <div class="limit-message">Не застосовується. Максимальна річна зарплата цієї категорії: 7818900</div>
+      </div>
+      <div class="chart" id="pdfo">
+        <div class="limit-message">Не застосовується. Максимальна річна зарплата цієї категорії: unlimited</div>
+      </div>
+      <div class="chart" id="diia">
+        <div class="limit-message">Не застосовується. Максимальна річна зарплата цієї категорії: 9348240</div>
+      </div>
 
     </div>
   

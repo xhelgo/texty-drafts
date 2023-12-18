@@ -7,13 +7,20 @@ let data4 = [];
 let data5 = [];
 
 for (let i = 4000; i <= 1000000; i += 1000) {
-    data1.push({rate: (taxesCalculator(i, '1') * 100).toFixed(2), income: i});
-    data2.push({rate: (taxesCalculator(i, '2') * 100).toFixed(2), income: i});
-    data3.push({rate: (taxesCalculator(i, '3') * 100).toFixed(2), income: i});
-    data4.push({rate: (taxesCalculator(i, 'pdfo') * 100).toFixed(2), income: i});
-    data5.push({rate: (taxesCalculator(i, 'diia') * 100).toFixed(2), income: i});
-}
+  let result1 = taxesCalculator(i, '1');
+  let result2 = taxesCalculator(i, '2');
+  let result3 = taxesCalculator(i, '3');
+  let result4 = taxesCalculator(i, 'pdfo');
+  let result5 = taxesCalculator(i, 'diia');
 
+  data1.push({rate: (result1.rate * 100).toFixed(2), income: i, sum: result1.sum});
+  data2.push({rate: (result2.rate * 100).toFixed(2), income: i, sum: result2.sum});
+  data3.push({rate: (result3.rate * 100).toFixed(2), income: i, sum: result3.sum});
+  data4.push({rate: (result4.rate * 100).toFixed(2), income: i, sum: result4.sum});
+  data5.push({rate: (result5.rate * 100).toFixed(2), income: i, sum: result5.sum});
+}
+console.log(data4[0].rate);
+console.log(data1);
 
 
 function createGraph(data, title, elementId) {
@@ -41,8 +48,19 @@ function createGraph(data, title, elementId) {
   let padding = 10;
 
   // Add X axis
+  let maxRate = d3.max(data, d => parseFloat(d.rate));
+
+  let domainEnd;
+  if (maxRate > 60) {
+    domainEnd = maxRate - 10;
+  } else if (maxRate == data4[0].rate) {
+    domainEnd = 40;
+  } else {
+    domainEnd = maxRate - 5;
+  }
+  
   let x = d3.scaleLinear()
-    .domain([0, d3.max(data, d => parseFloat(d.rate))])
+    .domain([0, domainEnd])
     .range([padding, width - padding]);
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -71,7 +89,7 @@ function createGraph(data, title, elementId) {
   // Add Y axis
   // let y = d3.scaleLinear()
   let y = d3.scaleLog()
-    .domain([5000, d3.max(data, d => Math.max(1, d.income))]) // Ensure domain doesn't start at 0 for log scale
+    .domain([4500, d3.max(data, d => Math.max(1, d.income))]) // Ensure domain doesn't start at 0 for log scale
     // .domain([0, d3.max(1, d => d.income)]) // linear scale
     .range([height - padding, padding]);
   svg.append("g")
@@ -104,7 +122,6 @@ function createGraph(data, title, elementId) {
 
 
 
-
     
   // This allows to find the closest X index of the mouse:
   let bisect = d3.bisector(function(d) { return d.income; }).left;
@@ -119,10 +136,13 @@ function createGraph(data, title, elementId) {
     .attr("x", width - 25) // Position at the right edge of the SVG
     .attr("y", 25); // Position at the top of the SVG
 
+  // Filter the data to include only values where income is less than or equal to 5000
+  let filteredData = data.filter(d => d.income >= 5000);
+
   // Add the chart line
   svg
     .append("path")
-    .datum(data)
+    .datum(filteredData) // Use the filtered data
     .attr("class", "line")
     .attr("fill", "none")
     .attr("stroke", "steelblue")
@@ -132,7 +152,7 @@ function createGraph(data, title, elementId) {
       .y(function(d) { return y(d.income) })
       )
     .style("stroke", "#675230");
-
+    
   // Create a rect on top of the svg area: this rectangle recovers mouse position
   svg
     .append('rect')
@@ -163,9 +183,10 @@ function createGraph(data, title, elementId) {
       .style("fill", "#ED2238")
       // .attr("stroke", "black")
       .attr('r', 8)
-      .style("opacity", 0) // initial visibility
+      .style("opacity", 10) // initial visibility
       .attr("cx", x(data[0].rate))
       .attr("cy", y(data[0].income))
+      .attr("class", "pointer");
 
   // What happens when the mouse move -> show the annotations at the right positions.
   function mouseover() {
@@ -176,13 +197,21 @@ function createGraph(data, title, elementId) {
     }
 
 
+  let offset = 1; // Define an offset that is small enough not to affect your data significantly
 
   function mousemove() {
     // recover coordinate we need
-    let y0 = y.invert(d3.mouse(this)[1]);
+    let mouseY = d3.mouse(this)[1];
+    let y0 = y.invert(mouseY);
+    
     let i = bisect(data, y0, 1);
     let selectedData = data[i]
-  
+
+    // If the mouse is within 10 pixels from the top, select the maximum value
+    if (mouseY < 10) {
+      selectedData = data[data.length - 1];
+    }
+    
     // Update the position of the pointers on all graphs
     graphs.forEach(graph => {
       let i = graph.bisect(graph.data, selectedData.income, 1);
@@ -196,8 +225,8 @@ function createGraph(data, title, elementId) {
       graph.focusText
         .text('')
         .append('tspan')
-        .attr('x', 220)
-        .text("Сума: ")
+        .attr('x', 210)
+        .text("Зарплата: ")
         .attr("class", "suma-text");
       
       graph.focusText
@@ -207,7 +236,7 @@ function createGraph(data, title, elementId) {
       
       graph.focusText
         .append('tspan')
-        .attr('x', 220)
+        .attr('x', 210)
         .attr('dy', '15')
         .text("Податок: ")
         .attr("class", "podatok-text");
@@ -217,18 +246,44 @@ function createGraph(data, title, elementId) {
         .text(selectedDataForGraph.rate + "%")
         .attr("class", "podatok-numbers");
 
+      graph.focusText
+        .append('tspan')
+        .attr('x', 210)
+        .attr('dy', '15')
+        .text("Виплати державі: ")
+        .attr("class", "suma-text");
+      
+      graph.focusText
+        .append('tspan')
+        .text(selectedDataForGraph.sum + "₴")
+        .attr("class", "suma-numbers");
+
+
+
 
       graph.verticalLine
         .attr("x1", graph.x(selectedDataForGraph.rate))
         .attr("y1", 0)
         .attr("x2", graph.x(selectedDataForGraph.rate))
-        .attr("y2", height);
+        .attr("y2", height)
+        .attr("class", "vertical-line");
 
       graph.horizontalLine
         .attr("x1", 0)
         .attr("y1", graph.y(selectedData.income))
         .attr("x2", width)
-        .attr("y2", graph.y(selectedData.income));
+        .attr("y2", graph.y(selectedData.income))
+        .attr("class", "horizontal-line");
+
+      // Hide the limit message
+      let limitMessages = document.querySelectorAll('.limit-message');
+      limitMessages.forEach(message => {
+        message.style.display = 'none';
+        message.onmousemove = function() {
+          this.style.display = 'none';
+        };
+      });
+
     });
   }
 
@@ -259,7 +314,7 @@ function updateGraph(graph, newData) {
 
   // Redraw the line with the new data
   line.transition()
-    .duration(1000)
+    .duration(10)
     .attr("d", lineGenerator);
 }
 
@@ -278,7 +333,7 @@ function movePointerToY(yValue) {
       .text('')
       .append('tspan')
       .attr('x', 210)
-      .text("Сума: ")
+      .text("Зарплата: ")
       .attr("class", "suma-text");
     
     graph.focusText
@@ -297,6 +352,19 @@ function movePointerToY(yValue) {
       .append('tspan')
       .text(selectedDataForGraph.rate + "%")
       .attr("class", "podatok-numbers");
+    
+    graph.focusText
+      .append('tspan')
+      .attr('x', 210)
+      .attr('dy', '15')
+      .text("Сума податку: ")
+      .attr("class", "suma-text");
+    
+    graph.focusText
+      .append('tspan')
+      .text(selectedDataForGraph.sum + "₴")
+      .attr("class", "suma-numbers");
+
 
       graph.verticalLine
       .attr("x1", graph.x(selectedDataForGraph.rate))
@@ -315,6 +383,30 @@ function movePointerToY(yValue) {
 function handleSubmit(event) {
   event.preventDefault();
   let income_i = parseInt(document.getElementById('incomeInput').value);
+
+  // Calculate the annual income
+  let annualIncome = income_i * 12;
+  
+  const LIMITS = {
+    "fop1": 1118900,
+    "fop2": 5587800,
+    "fop3": 7818900,
+    "pdfo": null,
+    "diia": 9348240
+  };
+
+  // Check the annual income against the limits and show/hide the limit message
+  for (let graphId in LIMITS) {
+    let limit = LIMITS[graphId];
+    let limitMessage = document.querySelector('#' + graphId + ' .limit-message');
+    
+    if (limit !== null && annualIncome > limit) {
+      limitMessage.style.display = 'flex';
+    } else {
+      limitMessage.style.display = 'none';
+    }
+  }
+
 
   data1.push({rate: (taxesCalculator(income_i, '1') * 100).toFixed(2), income: income_i});
   data2.push({rate: (taxesCalculator(income_i, '2') * 100).toFixed(2), income: income_i});
@@ -342,13 +434,24 @@ function handleSubmit(event) {
 }
 
 
-
 document.getElementById('inputField').addEventListener('submit', handleSubmit);
 
 let graphs = [
-  createGraph(data1, "ФОП 1", "#my_dataviz1"),
-  createGraph(data2, "ФОП 2", "#my_dataviz2"),
-  createGraph(data3, "ФОП 3", "#my_dataviz3"),
-  createGraph(data4, "ПДФО", "#my_dataviz4"),
-  createGraph(data5, "ДІЯ.City", "#my_dataviz5")
+  createGraph(data1, "ФОП 1", "#fop1"),
+  createGraph(data2, "ФОП 2", "#fop2"),
+  createGraph(data3, "ФОП 3", "#fop3"),
+  createGraph(data4, "ПДФО", "#pdfo"),
+  createGraph(data5, "ДІЯ.City", "#diia")
 ];
+
+// Set the value of the input field
+document.getElementById('incomeInput').value = '10000';
+
+// Create a new Event
+let event = new Event('submit');
+
+// Dispatch the event
+document.getElementById('inputField').dispatchEvent(event);
+
+// Clear the input field
+document.getElementById('incomeInput').value = '';

@@ -60,5 +60,13 @@ export default function taxesCalculator(income, taxationSystem, robotodavets = 0
     let vytratyRobotodavtsya = income + robotodavets * yesvSum;
     let naRuky = income - pdfoYedynyySum - viyskovyySum - (1 - robotodavets) * yesvSum;
 
-    return 1 - naRuky / vytratyRobotodavtsya;
+    
+    let rate_result = 1 - naRuky / vytratyRobotodavtsya;
+    let sum_result = income - naRuky;
+
+    return {
+        rate: rate_result,
+        sum: sum_result
+    };
+
 }
