@@ -176,11 +176,18 @@
 }
 
 .suma-numbers,
-.podatok-numbers {
+.podatok-numbers,
+.podatok-numbers-hrn,
+.podatok-numbers-hrn-break,
+.limit-hover {
   fill: rgb(237, 34, 56) !important;
   font-family: Inter;
   font-size: 14px;
   font-weight: 500;
+}
+
+.limit-hover {
+  font-weight: 600;
 }
 
 
@@ -233,7 +240,8 @@
 
 .pointer,
 .horizontal-line,
-.vertical-line {
+.vertical-line,
+.line2 {
   pointer-events: none;
 }
 
@@ -277,4 +285,16 @@
   font-size: 14px;
   font-weight: 500;
   color: rgb(103, 82, 48);
+}
+
+#pdfo .podatok-numbers-hrn {
+  display: none;
+}
+
+.podatok-numbers-hrn-break {
+  display: none;
+}
+
+#pdfo .podatok-numbers-hrn-break {
+  display: inline;
 }

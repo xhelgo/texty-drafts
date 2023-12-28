@@ -19,11 +19,9 @@ for (let i = 4000; i <= 1000000; i += 1000) {
   data4.push({rate: (result4.rate * 100).toFixed(2), income: i, sum: result4.sum});
   data5.push({rate: (result5.rate * 100).toFixed(2), income: i, sum: result5.sum});
 }
-console.log(data4[0].rate);
-console.log(data1);
 
 
-function createGraph(data, title, elementId) {
+function createGraph(data, title, elementId, limit) {
   // set the dimensions and margins of the graph
   let margin = {top: 30, right: 30, bottom: 30, left: 30},
       width = 290 - margin.left - margin.right,
@@ -121,22 +119,6 @@ function createGraph(data, title, elementId) {
     .text(title);
 
 
-
-    
-  // This allows to find the closest X index of the mouse:
-  let bisect = d3.bisector(function(d) { return d.income; }).left;
-
-  // Create the text that travels along the curve of chart
-  let focusText = svg
-  .append('g')
-  .append('text')
-    .style("opacity", 1)
-    .attr("text-anchor", "end") // Align the text to the end, so it aligns to the right
-    .attr("alignment-baseline", "middle")
-    .attr("x", width - 25) // Position at the right edge of the SVG
-    .attr("y", 25); // Position at the top of the SVG
-
-  // Filter the data to include only values where income is less than or equal to 5000
   let filteredData = data.filter(d => d.income >= 5000);
 
   // Add the chart line
@@ -152,6 +134,10 @@ function createGraph(data, title, elementId) {
       .y(function(d) { return y(d.income) })
       )
     .style("stroke", "#675230");
+
+
+    // This allows to find the closest X index of the mouse:
+    let bisect = d3.bisector(function(d) { return d.income; }).left;
     
   // Create a rect on top of the svg area: this rectangle recovers mouse position
   svg
@@ -188,12 +174,34 @@ function createGraph(data, title, elementId) {
       .attr("cy", y(data[0].income))
       .attr("class", "pointer");
 
+    // Create the text that travels along the curve of chart
+    let focusText = svg
+    .append('g')
+    .append('text')
+      .style("opacity", 1)
+      .attr("text-anchor", "end") // Align the text to the end, so it aligns to the right
+      .attr("alignment-baseline", "middle")
+      .attr("x", width - 25) // Position at the right edge of the SVG
+      .attr("y", 25); // Position at the top of the SVG  
+
+    let limitReached = svg
+    .append('g')
+    .append('text')
+      .style("opacity", 0)
+      .attr("class", "limit-hover")
+      .attr("text-anchor", "start") // Align the text to the end, so it aligns to the right
+      .attr("alignment-baseline", "middle")
+      .attr("x", 7.5) // Position at the right edge of the SVG
+      .attr("y", height-12.5) // Position at the top of the SVG
+      .text("Річний ліміт вичерпано")
+
   // What happens when the mouse move -> show the annotations at the right positions.
   function mouseover() {
     d3.selectAll('circle').style("opacity", 1);
     focusText.style("opacity",1)
     verticalLine.style("opacity", 1);
     horizontalLine.style("opacity", 1);
+    // limitReached.style("opacity", 1);
     }
 
 
@@ -208,19 +216,34 @@ function createGraph(data, title, elementId) {
     let selectedData = data[i]
 
     // If the mouse is within 10 pixels from the top, select the maximum value
-    if (mouseY < 10) {
-      selectedData = data[data.length - 1];
-    }
+    // if (mouseY < 10) {
+    //   selectedData = data[data.length - 1];
+    // }
     
+
     // Update the position of the pointers on all graphs
     graphs.forEach(graph => {
+      
       let i = graph.bisect(graph.data, selectedData.income, 1);
-      let selectedDataForGraph = graph.data[i];
 
+      // console.log(graph.limitReached);
+
+      if (selectedData.income * 12 > graph.limit) {
+        i = graph.bisect(graph.data, graph.limit / 12, 1) - 1;
+
+        graph.limitReached
+          .style("opacity", 1);
+
+      } else {
+        graph.limitReached
+          .style("opacity", 0);
+      }
+
+      let selectedDataForGraph = graph.data[i];
+      
       graph.focus
         .attr("cx", graph.x(selectedDataForGraph.rate))
-        .attr("cy", graph.y(selectedData.income));
-
+        .attr("cy", graph.y(selectedDataForGraph.income));
         
       graph.focusText
         .text('')
@@ -243,20 +266,21 @@ function createGraph(data, title, elementId) {
       
       graph.focusText
         .append('tspan')
-        .text(selectedDataForGraph.rate + "%")
-        .attr("class", "podatok-numbers");
-
+        .attr("class", "podatok-numbers")
+        .text(selectedDataForGraph.rate + "% /")
+        .attr('dy', '0px');
+    
       graph.focusText
         .append('tspan')
-        .attr('x', 210)
-        .attr('dy', '15')
-        .text("Виплати державі: ")
-        .attr("class", "suma-text");
+        .attr("class", "podatok-numbers-hrn")
+        .text(" " + selectedDataForGraph.sum + "₴");
       
       graph.focusText
         .append('tspan')
-        .text(selectedDataForGraph.sum + "₴")
-        .attr("class", "suma-numbers");
+        .attr('x', 210)
+        .attr("class", "podatok-numbers-hrn-break")
+        .text(" " + selectedDataForGraph.sum + "₴")
+        .attr('dy', '15px');
 
 
 
@@ -270,9 +294,9 @@ function createGraph(data, title, elementId) {
 
       graph.horizontalLine
         .attr("x1", 0)
-        .attr("y1", graph.y(selectedData.income))
+        .attr("y1", graph.y(selectedDataForGraph.income))
         .attr("x2", width)
-        .attr("y2", graph.y(selectedData.income))
+        .attr("y2", graph.y(selectedDataForGraph.income))
         .attr("class", "horizontal-line");
 
       // Hide the limit message
@@ -285,6 +309,7 @@ function createGraph(data, title, elementId) {
       });
 
     });
+    
   }
 
   function mouseout() {
@@ -294,7 +319,9 @@ function createGraph(data, title, elementId) {
     horizontalLine.style("opacity", 10);
   }
 
-  return { data, focus, focusText, verticalLine, horizontalLine, x, y, bisect };
+  console.log(elementId);
+  
+  return { data, focus, focusText, verticalLine, horizontalLine, x, y, bisect, svg, limit, limitReached };
 
 }
 
@@ -325,56 +352,59 @@ function movePointerToY(yValue) {
     let i = graph.bisect(graph.data, yValue, 1);
     let selectedDataForGraph = graph.data[i];
 
+    graph.limitReached
+      .style("opacity", 0);
+
     graph.focus
       .attr("cx", graph.x(selectedDataForGraph.rate))
       .attr("cy", graph.y(yValue));
 
       graph.focusText
-      .text('')
-      .append('tspan')
-      .attr('x', 210)
-      .text("Зарплата: ")
-      .attr("class", "suma-text");
+        .text('')
+        .append('tspan')
+        .attr('x', 210)
+        .text("Зарплата: ")
+        .attr("class", "suma-text");
+      
+      graph.focusText
+        .append('tspan')
+        .text(selectedDataForGraph.income)
+        .attr("class", "suma-numbers");
+      
+      graph.focusText
+        .append('tspan')
+        .attr('x', 210)
+        .attr('dy', '15')
+        .text("Податок: ")
+        .attr("class", "podatok-text");
+      
+      graph.focusText
+        .append('tspan')
+        .attr("class", "podatok-numbers")
+        .text(selectedDataForGraph.rate + "% /")
+        .attr('dy', '0px');
     
-    graph.focusText
-      .append('tspan')
-      .text(selectedDataForGraph.income)
-      .attr("class", "suma-numbers");
-    
-    graph.focusText
-      .append('tspan')
-      .attr('x', 210)
-      .attr('dy', '15')
-      .text("Податок: ")
-      .attr("class", "podatok-text");
-    
-    graph.focusText
-      .append('tspan')
-      .text(selectedDataForGraph.rate + "%")
-      .attr("class", "podatok-numbers");
-    
-    graph.focusText
-      .append('tspan')
-      .attr('x', 210)
-      .attr('dy', '15')
-      .text("Сума податку: ")
-      .attr("class", "suma-text");
-    
-    graph.focusText
-      .append('tspan')
-      .text(selectedDataForGraph.sum + "₴")
-      .attr("class", "suma-numbers");
+      graph.focusText
+        .append('tspan')
+        .attr("class", "podatok-numbers-hrn")
+        .text(" " + selectedDataForGraph.sum + "₴");
+      
+      graph.focusText
+        .append('tspan')
+        .attr('x', 210)
+        .attr("class", "podatok-numbers-hrn-break")
+        .text(" " + selectedDataForGraph.sum + "₴")
+        .attr('dy', '15px');
 
-
-      graph.verticalLine
+    graph.verticalLine
       .attr("x1", graph.x(selectedDataForGraph.rate))
       .attr("y1", 0)
       .attr("x2", graph.x(selectedDataForGraph.rate))
-      .attr("y2", 360);
+      .attr("y2", 230);
     graph.horizontalLine
       .attr("x1", 0)
       .attr("y1", graph.y(yValue))
-      .attr("x2", 370)
+      .attr("x2", 230)
       .attr("y2", graph.y(yValue));
   });
 
@@ -408,12 +438,17 @@ function handleSubmit(event) {
   }
 
 
-  data1.push({rate: (taxesCalculator(income_i, '1') * 100).toFixed(2), income: income_i});
-  data2.push({rate: (taxesCalculator(income_i, '2') * 100).toFixed(2), income: income_i});
-  data3.push({rate: (taxesCalculator(income_i, '3') * 100).toFixed(2), income: income_i});
-  data4.push({rate: (taxesCalculator(income_i, 'pdfo') * 100).toFixed(2), income: income_i});
-  data5.push({rate: (taxesCalculator(income_i, 'diia') * 100).toFixed(2), income: income_i});
-  console.log(data5);
+  let result1 = taxesCalculator(income_i, '1');
+  let result2 = taxesCalculator(income_i, '2');
+  let result3 = taxesCalculator(income_i, '3');
+  let result4 = taxesCalculator(income_i, 'pdfo');
+  let result5 = taxesCalculator(income_i, 'diia');
+
+  data1.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: result1.sum});
+  data2.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: result2.sum});
+  data3.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: result3.sum});
+  data4.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: result4.sum});
+  data5.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: result5.sum});
 
   // Sort the data by income
   data1.sort((a, b) => a.income - b.income);
@@ -434,14 +469,15 @@ function handleSubmit(event) {
 }
 
 
+
 document.getElementById('inputField').addEventListener('submit', handleSubmit);
 
 let graphs = [
-  createGraph(data1, "ФОП 1", "#fop1"),
-  createGraph(data2, "ФОП 2", "#fop2"),
-  createGraph(data3, "ФОП 3", "#fop3"),
-  createGraph(data4, "ПДФО", "#pdfo"),
-  createGraph(data5, "ДІЯ.City", "#diia")
+  createGraph(data1, "ФОП 1", "#fop1", 1118900),
+  createGraph(data2, "ФОП 2", "#fop2", 5587800),
+  createGraph(data3, "ФОП 3", "#fop3", 7818900),
+  createGraph(data4, "ПДФО", "#pdfo", 12000000),
+  createGraph(data5, "ДІЯ.City", "#diia", 9348240)
 ];
 
 // Set the value of the input field
@@ -455,3 +491,39 @@ document.getElementById('inputField').dispatchEvent(event);
 
 // Clear the input field
 document.getElementById('incomeInput').value = '';
+
+
+const LIMITS = {
+  "#fop1": 1118900,
+  "#fop2": 5587800,
+  "#fop3": 7818900,
+  "#pdfo": null,
+  "#diia": 9348240
+};
+
+// // Apply 'mousemove' listener to the first graph
+// graphs[0].svg.on('mousemove', function() {
+//   let mouseY = d3.mouse(this)[1];
+//   let y0 = graphs[0].y.invert(mouseY);
+  
+//   let bisect = d3.bisector(d => d.income).left;
+//   let i = bisect(graphs[0].data, y0, 1);
+
+//   let selectedData = graphs[0].data[i]
+
+//   // Check if the selected income exceeds the limit for the first graph
+//   if (selectedData.income * 12 > LIMITS["#fop1"]) {
+//     // If the limit is exceeded, stop updating the position of the pointer circle and the text for the graph
+//     graphs[0].focus.attr("cx", graphs[0].x('1.87'));
+//     graphs[0].focus.attr("cy", graphs[0].y(93000));
+//     graphs[0].horizontalLine.attr("y1", graphs[0].y(93000));
+//     graphs[0].horizontalLine.attr("y2", graphs[0].y(93000));
+//     graphs[0].verticalLine.attr("x1", graphs[0].x('1.87'));
+//     graphs[0].verticalLine.attr("x2", graphs[0].x('1.87'));
+//   } else {
+//     // Otherwise, update the position of the pointer circle and the text for the graph
+//     graphs[0].focus.attr("cx", graphs[0].x(selectedData.rate));
+//     graphs[0].focus.attr("cy", graphs[0].y(selectedData.income));
+//     // ... update the text ...
+//   }
+// });
