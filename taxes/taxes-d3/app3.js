@@ -484,4 +484,6 @@ window.onload = function() {
 
   // Call the handleSubmit function with a mock event object
   handleSubmit({ preventDefault: function(){} });
+
+  document.getElementById('incomeInput').value = '';
 };
