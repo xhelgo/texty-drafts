@@ -139,7 +139,6 @@
     }
 }
 
-
 .chart:not(:nth-child(1)) {
   .suma-text,
   .podatok-text {
@@ -234,9 +233,6 @@
   font-weight: 700;
 }
 
-/* #inputField input[type="submit"] {
-  order: 3;
-} */
 
 .pointer,
 .horizontal-line,
