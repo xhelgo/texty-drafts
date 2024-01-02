@@ -205,7 +205,7 @@ function createGraph(data, title, elementId, limit) {
     }
 
 
-  let offset = 1; // Define an offset that is small enough not to affect your data significantly
+  // let offset = 1; // Define an offset that is small enough not to affect your data significantly
 
   function mousemove() {
     // recover coordinate we need
@@ -216,9 +216,9 @@ function createGraph(data, title, elementId, limit) {
     let selectedData = data[i]
 
     // If the mouse is within 10 pixels from the top, select the maximum value
-    // if (mouseY < 10) {
-    //   selectedData = data[data.length - 1];
-    // }
+    if (mouseY < 10) {
+      selectedData = data[data.length - 1];
+    }
     
 
     // Update the position of the pointers on all graphs
@@ -319,7 +319,7 @@ function createGraph(data, title, elementId, limit) {
     horizontalLine.style("opacity", 10);
   }
 
-  console.log(elementId);
+  // console.log(elementId);
   
   return { data, focus, focusText, verticalLine, horizontalLine, x, y, bisect, svg, limit, limitReached };
 
@@ -468,8 +468,6 @@ function handleSubmit(event) {
   movePointerToY(income_i);
 }
 
-
-
 document.getElementById('inputField').addEventListener('submit', handleSubmit);
 
 let graphs = [
@@ -480,50 +478,10 @@ let graphs = [
   createGraph(data5, "ДІЯ.City", "#diia", 9348240)
 ];
 
-// Set the value of the input field
-document.getElementById('incomeInput').value = '10000';
+window.onload = function() {
+  // Set the value of the input field
+  document.getElementById('incomeInput').value = '10000';
 
-// Create a new Event
-let event = new Event('submit');
-
-// Dispatch the event
-document.getElementById('inputField').dispatchEvent(event);
-
-// Clear the input field
-document.getElementById('incomeInput').value = '';
-
-
-const LIMITS = {
-  "#fop1": 1118900,
-  "#fop2": 5587800,
-  "#fop3": 7818900,
-  "#pdfo": null,
-  "#diia": 9348240
+  // Call the handleSubmit function with a mock event object
+  handleSubmit({ preventDefault: function(){} });
 };
-
-// // Apply 'mousemove' listener to the first graph
-// graphs[0].svg.on('mousemove', function() {
-//   let mouseY = d3.mouse(this)[1];
-//   let y0 = graphs[0].y.invert(mouseY);
-  
-//   let bisect = d3.bisector(d => d.income).left;
-//   let i = bisect(graphs[0].data, y0, 1);
-
-//   let selectedData = graphs[0].data[i]
-
-//   // Check if the selected income exceeds the limit for the first graph
-//   if (selectedData.income * 12 > LIMITS["#fop1"]) {
-//     // If the limit is exceeded, stop updating the position of the pointer circle and the text for the graph
-//     graphs[0].focus.attr("cx", graphs[0].x('1.87'));
-//     graphs[0].focus.attr("cy", graphs[0].y(93000));
-//     graphs[0].horizontalLine.attr("y1", graphs[0].y(93000));
-//     graphs[0].horizontalLine.attr("y2", graphs[0].y(93000));
-//     graphs[0].verticalLine.attr("x1", graphs[0].x('1.87'));
-//     graphs[0].verticalLine.attr("x2", graphs[0].x('1.87'));
-//   } else {
-//     // Otherwise, update the position of the pointer circle and the text for the graph
-//     graphs[0].focus.attr("cx", graphs[0].x(selectedData.rate));
-//     graphs[0].focus.attr("cy", graphs[0].y(selectedData.income));
-//     // ... update the text ...
-//   }
-// });
