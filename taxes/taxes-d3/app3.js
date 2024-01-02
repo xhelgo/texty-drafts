@@ -444,11 +444,11 @@ function handleSubmit(event) {
   let result4 = taxesCalculator(income_i, 'pdfo');
   let result5 = taxesCalculator(income_i, 'diia');
 
-  data1.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: result1.sum});
-  data2.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: result2.sum});
-  data3.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: result3.sum});
-  data4.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: result4.sum});
-  data5.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: result5.sum});
+  data1.push({rate: (result1.rate * 100).toFixed(2), income: income_i, sum: (result1.sum).toFixed(0)});
+  data2.push({rate: (result2.rate * 100).toFixed(2), income: income_i, sum: (result2.sum).toFixed(0)});
+  data3.push({rate: (result3.rate * 100).toFixed(2), income: income_i, sum: (result3.sum).toFixed(0)});
+  data4.push({rate: (result4.rate * 100).toFixed(2), income: income_i, sum: (result4.sum).toFixed(0)});
+  data5.push({rate: (result5.rate * 100).toFixed(2), income: income_i, sum: (result5.sum).toFixed(0)});
 
   // Sort the data by income
   data1.sort((a, b) => a.income - b.income);
