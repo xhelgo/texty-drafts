@@ -1,18 +1,39 @@
 ﻿<!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Taxes Dashboard</title>
+
     <script src="https://d3js.org/d3.v4.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="styles.css">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">  </head>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+
   <body>
 
   <div class="container">
+
+    <div class="header">
+      <h1>Інтерактивний калькулятор податків</h1>
+      
+      <button class="collapsible">ЯК ЦЕ ПРАЦЮЄ</button>
+      <div class="content">
+      <div id="info" style="display: block;">
+      <p>Графіки нижче вказують відсоток й суму податку від доходу залежно від вибраної системи оподаткування.</p>
+      <p>Для зручності в порівнянні розрахунки й вказівники усіх графіків синхронізуються за доходом.</p>
+      <p>Оскільки деякі системи оподаткування мають річні ліміти, то вказівники зупиняються, якщо вказана вами <span class="calculation">зарплата × 12 міс.</span> перевищує їх. Річні ліміти привʼязані до мінімальної зарплати й станом на 2023 рік становлять: <span class="sum">₴1118900</span> — для першої групи ФОП, <span class="sum">₴5587800</span> — для другої групи ФОП, <span class="sum">₴7818900</span> — для третьої групи ФОП й <span class="sum">₴9348240</span> — для резидентів Дія.City.</p>
+      <p>Якщо після введення даних вручну, ви отримали повідомлення про перевищення ліміту, варто провести по будь-якому з графіків, щоби побачити приховану візуалізацію знову.</p>
+      </div>
+
+      </div>
+
+    </div>
 
     <div class="input">
       <form id="inputField">
@@ -46,10 +67,27 @@
     
     <script type="module" src="app3.js"></script>
 
-    <script>
-
-    </script>
-
   </body>
 
+  <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+          this.style.width = 230 + "px";
+          content.style.border = 0 + "px";
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+          this.style.width = 100 + "%";
+          content.style.border = 2 + "px solid #796038";
+        } 
+      });
+    }
+    </script>    
+    
 </html>

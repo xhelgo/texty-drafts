@@ -190,6 +190,53 @@
 }
 
 
+.header {
+  margin: 0 30px;
+  max-width: 800px;
+  margin-bottom: 30px;
+}
+
+h1 {
+  font-family: Inter;
+  font-size: 32px;
+  font-weight: 700;
+  color: #1F1F1F;
+}
+
+.content {
+  position: relative;
+  padding-left: 50px;
+}
+
+.content button{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50px;
+  height: 25px;
+  border: none;
+}
+
+p {
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 400;
+  color: #1F1F1F;
+}
+
+p .calculation {
+  font-weight: 500;
+  background-color: #FFFAEC;
+  color: #ED2238;
+  padding: 2px;
+}
+
+p .sum {
+  font-weight: 500;
+  color: #ED2238;
+}
+
+
 .input {
   position: sticky;
   z-index: 3;
@@ -293,4 +340,41 @@
 
 #pdfo .podatok-numbers-hrn-break {
   display: inline;
+}
+
+.collapsible {
+  background-color: #675230;
+  color: white;
+  cursor: pointer;
+  padding: 12px;
+  width: 230px;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-family: Inter;
+  font-size: 14px;
+  transition: width 0.2s ease-out;
+}
+
+.active, .collapsible:hover {
+  background-color: #796038;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
 }
