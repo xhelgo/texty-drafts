@@ -7,8 +7,8 @@
 };
 
 const PDFO_YEDYNY_SUMS = {
-    1: 302.3,
-    2: 1562,
+    1: 292,
+    2: 1420,
     3: null,
     "pdfo": null,
     "diia": null
