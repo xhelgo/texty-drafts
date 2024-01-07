@@ -423,7 +423,7 @@ let graphs = [
   createGraph(data2, "ФОП 2", "#fop2", 5587800),
   createGraph(data3, "ФОП 3", "#fop3", 7818900),
   createGraph(data4, "ПДФО", "#pdfo", 12000000),
-  createGraph(data5, "ДІЯ.City", "#diia", 9348240)
+  createGraph(data5, "ПДФО для ДІЯ.City", "#diia", 9348240)
 ];
 
 // Set the default pointer value on page load
