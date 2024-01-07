@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Taxes Dashboard</title>
+
+    <script src="https://d3js.org/d3.v4.js"></script>
+    
+    <link rel="stylesheet" type="text/css" href="styles.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  </head>
+
+  <body>
+
+  <div class="container">
+
+    <div class="header">
+      <h1>Інтерактивний калькулятор податків</h1>
+
+      <!-- <select id="yearSelect">
+        <option value="2023">2023</option>
+        <option value="2024">2024</option>
+      </select>     -->
+      
+      <button class="collapsible">ЯК ЦЕ ПРАЦЮЄ</button>
+      <div class="content">
+      <div id="info" style="display: block;">
+      <p>Графіки нижче вказують відсоток й суму податку від доходу залежно від вибраної системи оподаткування.</p>
+      <p>Для зручності в порівнянні розрахунки й вказівники усіх графіків синхронізуються за доходом.</p>
+      <p>Оскільки деякі системи оподаткування мають річні ліміти, то вказівники зупиняються, якщо вказана вами <span class="calculation">зарплата × 12 міс.</span> перевищує їх. Річні ліміти привʼязані до мінімальної зарплати й станом на 2023 рік становлять: <span class="sum">₴1118900</span> — для першої групи ФОП, <span class="sum">₴5587800</span> — для другої групи ФОП, <span class="sum">₴7818900</span> — для третьої групи ФОП й <span class="sum">₴9348240</span> — для резидентів Дія.City (для резидентів Дія.City сума доходу не має перевищувати еквівалент 240 тис. євро за календарний рік за офіційним курсом гривні до євро, встановленим Національним банком України на 1 січня цього ж року. Сума доходу, що перевищує цей поріг, оподатковується за ставкою 18%).</p>
+      <p>Якщо після введення даних вручну, ви отримали повідомлення про перевищення ліміту, варто провести по будь-якому з графіків, щоби побачити приховану візуалізацію знову.</p>
+      </div>
+
+      </div>
+
+    </div>
+
+    <div class="input">
+      <form id="inputField">
+        <label for="incomeInput">ВВЕДІТЬ ЗП:</label>
+        <input type="text" id="incomeInput" name="incomeInput" placeholder="10000" pattern="^([5-9]\d{3}|[1-9]\d{4,5}|1000000)$" title="Будь ласка, введіть зарплату в межах 5000–1000000">
+        <!-- <input type="submit" value="OK"> -->
+      </form>
+    </div>
+
+    <div class="charts">
+
+      <div class="chart" id="fop1">
+        <div class="limit-message">Не застосовується. Максимальна річна зарплата цієї категорії: 1185700</div>
+      </div>
+      <div class="chart" id="fop2">
+        <div class="limit-message">Не застосовується. Максимальна річна зарплата цієї категорії: 5921400</div>
+      </div>
+      <div class="chart" id="fop3">
+        <div class="limit-message">Не застосовується. Максимальна річна зарплата цієї категорії: 8285700</div>
+      </div>
+      <div class="chart" id="pdfo">
+        <div class="limit-message">Не застосовується. Максимальна річна зарплата цієї категорії: unlimited</div>
+      </div>
+      <div class="chart" id="diia">
+        <div class="limit-message">Не застосовується. Максимальна річна зарплата цієї категорії: 10079040</div>
+      </div>
+
+    </div>
+  
+  </div>
+    
+    <script type="module" src="app3_24.js"></script>
+
+  </body>
+
+  <script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+    
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight){
+          content.style.maxHeight = null;
+          this.style.width = 230 + "px";
+          content.style.border = 0 + "px";
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+          this.style.width = 100 + "%";
+          content.style.border = 2 + "px solid #796038";
+        } 
+      });
+    }
+    </script>    
+    
+</html>
