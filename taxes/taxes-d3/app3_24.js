@@ -143,7 +143,8 @@ function createGraph(data, title, elementId, limit) {
     .style("pointer-events", "all")
     .attr('width', width)
     .attr('height', height)
-    .on('mousemove', mousemove);
+    .on('mousemove', mousemove)
+    .on('touchmove', mousemove);
 
   let verticalLine = svg.append('line')
     .style("stroke", "#B0AA9E")
