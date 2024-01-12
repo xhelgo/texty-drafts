@@ -146,6 +146,10 @@
   }
 }
 
+.chart svg {
+  touch-action: none;
+}
+
 
 .tick line {
   display: none;

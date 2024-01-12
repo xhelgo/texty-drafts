@@ -137,7 +137,7 @@ function createGraph(data, title, elementId, limit) {
   let bisect = d3.bisector(function(d) { return d.income; }).left;
     
   // Create a rect on top of the svg area: this rectangle recovers mouse position
-  svg
+  let svgElement = svg
     .append('rect')
     .style("fill", "none")
     .style("pointer-events", "all")
