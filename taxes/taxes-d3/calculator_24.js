@@ -28,7 +28,7 @@ const YESV_RATE = 0.22;
 const VIYSKOVYY_RATE = 0.015;
 
 export default function taxesCalculator(income, taxationSystem, robotodavets = 0) {
-    let limit = LIMITS[taxationSystem];
+    // let limit = LIMITS[taxationSystem];
     let pdfoYedynyySum = PDFO_YEDYNY_SUMS[taxationSystem];
     let pdfoYedynyyRate = PDFO_YEDYNY_RATES[taxationSystem];
     if (taxationSystem === "pdfo") {
@@ -39,22 +39,24 @@ export default function taxesCalculator(income, taxationSystem, robotodavets = 0
     //     return 0;
     // }
 
-    if (pdfoYedynyyRate) {
-        pdfoYedynyySum = income * pdfoYedynyyRate;
-    }
-
     let yesvSum;
     let viyskovyySum;
+
     if (taxationSystem === "pdfo" || taxationSystem === "diia") {
         if (taxationSystem === "diia") {
             yesvSum = YESV_MIN;
         } else {
-            yesvSum = Math.min(Math.max(income * YESV_RATE, YESV_MIN), YESV_MAX);
+            yesvSum = Math.min(Math.max(income - (income / (1 + YESV_RATE)), YESV_MIN), YESV_MAX);
+            income = income - yesvSum;
         }
         viyskovyySum = income * VIYSKOVYY_RATE;
     } else {
         yesvSum = YESV_MIN;
         viyskovyySum = 0;
+    }
+    
+    if (pdfoYedynyyRate) {
+        pdfoYedynyySum = income * pdfoYedynyyRate;
     }
 
     let vytratyRobotodavtsya = income + robotodavets * yesvSum;
@@ -62,7 +64,7 @@ export default function taxesCalculator(income, taxationSystem, robotodavets = 0
 
     
     let rate_result = 1 - naRuky / vytratyRobotodavtsya;
-    let sum_result = income - naRuky;
+    let sum_result = income - naRuky + (robotodavets * yesvSum);
 
     return {
         rate: rate_result,

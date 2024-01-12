@@ -6,7 +6,7 @@ let data3 = [];
 let data4 = [];
 let data5 = [];
 
-for (let i = 4000; i <= 1000000; i += 1000) {
+for (let i = 6100; i <= 1000000;) {
   let result1 = taxesCalculator(i, '1');
   let result2 = taxesCalculator(i, '2');
   let result3 = taxesCalculator(i, '3');
@@ -18,8 +18,13 @@ for (let i = 4000; i <= 1000000; i += 1000) {
   data3.push({rate: (result3.rate * 100).toFixed(2), income: i, sum: (result3.sum).toFixed(0)});
   data4.push({rate: (result4.rate * 100).toFixed(2), income: i, sum: (result4.sum).toFixed(0)});
   data5.push({rate: (result5.rate * 100).toFixed(2), income: i, sum: (result5.sum).toFixed(0)});
-}
 
+  if (i === 7100) {
+    i += 900;
+  } else {
+    i += 1000;
+  }
+}
 
 function createGraph(data, title, elementId, limit) {
   // set the dimensions and margins of the graph
@@ -46,19 +51,19 @@ function createGraph(data, title, elementId, limit) {
   let padding = 10;
 
   // Add X axis
-  let maxRate = d3.max(data, d => parseFloat(d.rate));
+  // let maxRate = d3.max(data, d => parseFloat(d.rate));
 
-  let domainEnd;
-  if (maxRate > 60) {
-    domainEnd = maxRate - 10;
-  } else if (maxRate == data4[0].rate) {
-    domainEnd = 40;
-  } else {
-    domainEnd = maxRate - 5;
-  }
+  // let domainEnd = maxRate;
+  // if (maxRate > 60) {
+  //   domainEnd = maxRate - 10;
+  // } else if (maxRate == data4[0].rate) {
+  //   domainEnd = 40;
+  // } else {
+  //   domainEnd = maxRate - 5;
+  // }
   
   let x = d3.scaleLinear()
-    .domain([0, domainEnd])
+    .domain([0, 45])
     .range([padding, width - padding]);
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -82,7 +87,7 @@ function createGraph(data, title, elementId, limit) {
 
   // Add Y axis
   let y = d3.scaleLog()
-    .domain([4500, d3.max(data, d => Math.max(1, d.income))]) // Ensure domain doesn't start at 0 for log scale
+    .domain([5500, d3.max(data, d => Math.max(1, d.income))]) // Ensure domain doesn't start at 0 for log scale
     .range([height - padding, padding]);
   svg.append("g")
     .call(d3.axisLeft(y)
@@ -111,8 +116,8 @@ function createGraph(data, title, elementId, limit) {
     .attr("y", padding - 15) // Position the text at the top of the SVG, below the padding
     .text(title);
 
-  // filter data to remove the values below 5000
-  let filteredData = data.filter(d => d.income >= 5000);
+  // filter data to remove the values below 7100
+  let filteredData = data.filter(d => d.income >= 7100);
 
   // Add the chart line
   svg
