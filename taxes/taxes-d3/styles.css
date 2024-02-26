@@ -25,7 +25,8 @@
     }
     
     .suma-text,
-    .podatok-text {
+    .podatok-text,
+    .naruky-text {
       visibility: hidden;
     }
   }
@@ -86,7 +87,8 @@
     }
     
     .suma-text,
-    .podatok-text {
+    .podatok-text,
+    .naruky-text {
       visibility: hidden;
     }
   }
@@ -119,7 +121,8 @@
     }
     
     .suma-text,
-    .podatok-text {
+    .podatok-text,
+    .naruky-text {
       visibility: hidden;
     }
   }
@@ -141,7 +144,8 @@
 
 .chart:not(:nth-child(1)) {
   .suma-text,
-  .podatok-text {
+  .podatok-text,
+  .naruky-text {
     visibility: hidden;
   }
 }
@@ -173,7 +177,8 @@
 }
 
 .suma-text,
-.podatok-text {
+.podatok-text,
+.naruky-text {
   font-family: Inter;
   font-size: 14px;
 }
@@ -182,6 +187,7 @@
 .podatok-numbers,
 .podatok-numbers-hrn,
 .podatok-numbers-hrn-break,
+.naruky-numbers,
 .limit-hover {
   fill: rgb(237, 34, 56) !important;
   font-family: Inter;
@@ -382,3 +388,16 @@ p .sum {
   overflow: hidden;
   transition: max-height 0.2s ease-out;
 }
+
+.caption-text {
+  display: none; /* Hide all .caption-text by default */
+}
+
+#pdfo .caption-text {
+  display: inline;
+  font-family: Inter;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgb(103, 82, 48);
+}
+

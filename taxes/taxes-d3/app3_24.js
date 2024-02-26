@@ -13,11 +13,11 @@ for (let i = 6100; i <= 1000000;) {
   let result4 = taxesCalculator(i, 'pdfo');
   let result5 = taxesCalculator(i, 'diia');
 
-  data1.push({rate: (result1.rate * 100).toFixed(2), income: i, sum: (result1.sum).toFixed(0)});
-  data2.push({rate: (result2.rate * 100).toFixed(2), income: i, sum: (result2.sum).toFixed(0)});
-  data3.push({rate: (result3.rate * 100).toFixed(2), income: i, sum: (result3.sum).toFixed(0)});
-  data4.push({rate: (result4.rate * 100).toFixed(2), income: i, sum: (result4.sum).toFixed(0)});
-  data5.push({rate: (result5.rate * 100).toFixed(2), income: i, sum: (result5.sum).toFixed(0)});
+  data1.push({rate: (result1.rate * 100).toFixed(2), income: i, sum: (result1.sum).toFixed(0), naRuky: (result1.naRuky).toFixed(0)});
+  data2.push({rate: (result2.rate * 100).toFixed(2), income: i, sum: (result2.sum).toFixed(0), naRuky: (result2.naRuky).toFixed(0)});
+  data3.push({rate: (result3.rate * 100).toFixed(2), income: i, sum: (result3.sum).toFixed(0), naRuky: (result3.naRuky).toFixed(0)});
+  data4.push({rate: (result4.rate * 100).toFixed(2), income: i, sum: (result4.sum).toFixed(0), naRuky: (result4.naRuky).toFixed(0)});
+  data5.push({rate: (result5.rate * 100).toFixed(2), income: i, sum: (result5.sum).toFixed(0), naRuky: (result5.naRuky).toFixed(0)});
 
   if (i === 7100) {
     i += 900;
@@ -46,7 +46,8 @@ function createGraph(data, title, elementId, limit) {
   svg.append("rect")
     .attr("width", width)
     .attr("height", height)
-    .style("fill", "#fffaec");
+    .style("fill", "#fffaec")
+    .style("class", "chart-background");
 
   let padding = 10;
 
@@ -84,7 +85,7 @@ function createGraph(data, title, elementId, limit) {
     .attr("text-anchor", "start") // this makes it easy to centre the text as the transform is applied to the anchor
     .attr("transform", "translate(" + padding + "," + (height + margin.bottom - 14) + ")") // text is drawn off the screen top left, move down and out and rotate
     .text("Відсоток:");
-
+  
   // Add Y axis
   let y = d3.scaleLog()
     .domain([5500, d3.max(data, d => Math.max(1, d.income))]) // Ensure domain doesn't start at 0 for log scale
@@ -169,15 +170,53 @@ function createGraph(data, title, elementId, limit) {
       .attr("cy", y(data[0].income))
       .attr("class", "pointer");
 
+  let pfdoCaption = svg
+  .append('g')
+  .append('text')
+    .style("opacity", 1)
+    .style("pointer-events", "none")
+    .attr("text-anchor", "start") // Align the text to the end, so it aligns to the right
+    .attr("alignment-baseline", "middle")
+    .attr("x", 10) // Position at the right edge of the SVG
+    .attr("y", height - 50); // Position at the top of the SVG
+
+  pfdoCaption
+    .append('tspan')
+    .attr('x', 10)
+    .text("*розраховано податок на")
+    .attr("class", "caption-text");
+
+  pfdoCaption
+    .append('tspan')
+    .attr('x', 10)
+    .text("доходи фізичних осіб (ПДФО)")
+    .attr('dy', '12.5')
+    .attr("class", "caption-text");
+  
+  pfdoCaption
+  .append('tspan')
+  .attr('x', 10)
+  .text("та податок, який платить")
+  .attr('dy', '12.5')
+  .attr("class", "caption-text");
+
+  pfdoCaption
+  .append('tspan')
+  .attr('x', 10)
+  .text("роботодавець")
+  .attr('dy', '12.5')
+  .attr("class", "caption-text");
+
   // Create the text that travels along the curve of chart
   let focusText = svg
   .append('g')
   .append('text')
     .style("opacity", 1)
+    .style("pointer-events", "none")
     .attr("text-anchor", "end") // Align the text to the end, so it aligns to the right
     .attr("alignment-baseline", "middle")
     .attr("x", width - 25) // Position at the right edge of the SVG
-    .attr("y", 25); // Position at the top of the SVG  
+    .attr("y", 25); // Position at the top of the SVG 
 
   let limitReached = svg
   .append('g')
@@ -234,7 +273,7 @@ function createGraph(data, title, elementId, limit) {
       
       graph.focusText
         .append('tspan')
-        .text(selectedDataForGraph.income)
+        .text(selectedDataForGraph.income + "₴")
         .attr("class", "suma-numbers");
       
       graph.focusText
@@ -242,12 +281,12 @@ function createGraph(data, title, elementId, limit) {
         .attr('x', 210)
         .attr('dy', '15')
         .text("Податок: ")
-        .attr("class", "podatok-text");
+        .attr("class", "podatok-text tooltip");
       
       graph.focusText
         .append('tspan')
         .attr("class", "podatok-numbers")
-        .text(selectedDataForGraph.rate + "% /")
+        .text(selectedDataForGraph.rate.toString().replace(/\./, ',') + "% /")
         .attr('dy', '0px');
     
       graph.focusText
@@ -261,6 +300,28 @@ function createGraph(data, title, elementId, limit) {
         .attr("class", "podatok-numbers-hrn-break")
         .text(" " + selectedDataForGraph.sum + "₴")
         .attr('dy', '15px');
+
+      // let text = selectedDataForGraph.sum;
+
+      // graph.focusText
+      //   .append('tspan')
+      //   .attr('x', 210)
+      //   .attr('dy', '7.5')
+      //   .text("_".repeat(10))
+      //   .attr("class", "naruky-numbers");
+
+      graph.focusText
+        .append('tspan')
+        .attr('x', 210)
+        .attr('dy', '15')
+        .text("На руки: ")
+        .attr("class", "naruky-text");
+      
+      graph.focusText
+        .append('tspan')
+        .attr("class", "naruky-numbers")
+        .text(selectedDataForGraph.naRuky + "₴")
+        .attr('dy', '0px');
 
 
       graph.verticalLine
@@ -330,12 +391,12 @@ function movePointerToY(yValue) {
       .attr('x', 210)
       .attr('dy', '15')
       .text("Податок: ")
-      .attr("class", "podatok-text");
+      .attr("class", "podatok-text tooltip");
     
     graph.focusText
       .append('tspan')
       .attr("class", "podatok-numbers")
-      .text(selectedDataForGraph.rate + "% /")
+      .text(selectedDataForGraph.rate.toString().replace(/\./, ',') + "% /")
       .attr('dy', '0px');
   
     graph.focusText
@@ -349,6 +410,19 @@ function movePointerToY(yValue) {
       .attr("class", "podatok-numbers-hrn-break")
       .text(" " + selectedDataForGraph.sum + "₴")
       .attr('dy', '15px');
+
+    graph.focusText
+      .append('tspan')
+      .attr('x', 210)
+      .attr('dy', '15')
+      .text("На руки: ")
+      .attr("class", "naruky-text");
+    
+    graph.focusText
+      .append('tspan')
+      .attr("class", "naruky-numbers")
+      .text(selectedDataForGraph.naRuky + "₴")
+      .attr('dy', '0px');
 
     graph.verticalLine
       .attr("x1", graph.x(selectedDataForGraph.rate))
@@ -428,8 +502,8 @@ let graphs = [
   createGraph(data1, "ФОП 1", "#fop1", 1185700),
   createGraph(data2, "ФОП 2", "#fop2", 5921400),
   createGraph(data3, "ФОП 3", "#fop3", 8285700),
-  createGraph(data4, "ПДФО", "#pdfo", 12000000),
-  createGraph(data5, "ПДФО для ДІЯ.City", "#diia", 10079040)
+  createGraph(data4, "Зарплата", "#pdfo", 12000000),
+  createGraph(data5, "ДІЯ.City", "#diia", 10079040)
 ];
 
 // Set the default pointer value on page load
