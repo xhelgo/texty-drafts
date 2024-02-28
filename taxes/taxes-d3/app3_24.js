@@ -164,11 +164,39 @@ function createGraph(data, title, elementId, limit) {
     .append('g')
     .append('circle')
       .style("fill", "#ED2238")
-      .attr('r', 8)
+      .attr('r', 7)
       .style("opacity", 10) // initial visibility
       .attr("cx", x(data[0].rate))
       .attr("cy", y(data[0].income))
       .attr("class", "pointer");
+
+  let infoGroup = svg.append('g')
+    .attr("class", "info-group")
+    .attr("style", "visibility: hidden");
+
+  let infoCircle = infoGroup
+    .append('circle')
+    .style("fill", "#ED2238")
+    .attr('r', 7)
+    .attr("cx", 68)
+    .attr("cy", 14);
+  
+  let infoText = infoGroup
+    .append('text')
+    .attr("x", 68)
+    .attr("y", 14)
+    .attr("dy", ".35em")
+    .text("i")
+    .style("text-anchor", "middle")
+    .style("fill", "white")
+    .style("font-family", "Georgia")
+    .style("font-size", "10px")
+    .style("pointer-events", "none");
+
+    tippy('.info-group', {
+      content: '<div style="font-family: Inter; font-size: 14px; padding: 7px;">Тут враховані: <br>- податок на доходи фізичних осіб (ПДФО) — 18% зарплати, платить працівник; <br>- військовий збір — 1,5% зарплати, платить працівник; <br>- єдиний соціальний внесок (ЄСВ) — 22% зарплати, платить роботодавець.</div>',
+      allowHTML: true,
+    });
 
   let pfdoCaption = svg
   .append('g')
@@ -216,7 +244,7 @@ function createGraph(data, title, elementId, limit) {
     .attr("text-anchor", "end") // Align the text to the end, so it aligns to the right
     .attr("alignment-baseline", "middle")
     .attr("x", width - 25) // Position at the right edge of the SVG
-    .attr("y", 25); // Position at the top of the SVG 
+    .attr("y", 20); // Position at the top of the SVG 
 
   let limitReached = svg
   .append('g')
@@ -267,18 +295,18 @@ function createGraph(data, title, elementId, limit) {
       graph.focusText
         .text('')
         .append('tspan')
-        .attr('x', 210)
+        .attr('x', 220)
         .text("Зарплата: ")
         .attr("class", "suma-text");
       
       graph.focusText
         .append('tspan')
-        .text(selectedDataForGraph.income + "₴")
+        .text(selectedDataForGraph.income + " грн")
         .attr("class", "suma-numbers");
       
       graph.focusText
         .append('tspan')
-        .attr('x', 210)
+        .attr('x', 220)
         .attr('dy', '15')
         .text("Податок: ")
         .attr("class", "podatok-text tooltip");
@@ -292,27 +320,27 @@ function createGraph(data, title, elementId, limit) {
       graph.focusText
         .append('tspan')
         .attr("class", "podatok-numbers-hrn")
-        .text(" " + selectedDataForGraph.sum + "₴");
+        .text(" " + selectedDataForGraph.sum + " грн");
       
       graph.focusText
         .append('tspan')
-        .attr('x', 210)
+        .attr('x', 220)
         .attr("class", "podatok-numbers-hrn-break")
-        .text(" " + selectedDataForGraph.sum + "₴")
+        .text(" " + selectedDataForGraph.sum + " грн")
         .attr('dy', '15px');
 
       // let text = selectedDataForGraph.sum;
 
       // graph.focusText
       //   .append('tspan')
-      //   .attr('x', 210)
+      //   .attr('x', 220)
       //   .attr('dy', '7.5')
       //   .text("_".repeat(10))
       //   .attr("class", "naruky-numbers");
 
       graph.focusText
         .append('tspan')
-        .attr('x', 210)
+        .attr('x', 220)
         .attr('dy', '15')
         .text("На руки: ")
         .attr("class", "naruky-text");
@@ -320,7 +348,7 @@ function createGraph(data, title, elementId, limit) {
       graph.focusText
         .append('tspan')
         .attr("class", "naruky-numbers")
-        .text(selectedDataForGraph.naRuky + "₴")
+        .text(selectedDataForGraph.naRuky + " грн")
         .attr('dy', '0px');
 
 
@@ -346,6 +374,13 @@ function createGraph(data, title, elementId, limit) {
           this.style.display = 'none';
         };
       });
+
+      // infoCircle
+      // .attr("cx", graph.x(d3.select('.suma-text').node().getBBox().y));
+    
+      // infoText
+      //   .attr("cx", graph.x(d3.select('.suma-text').node().getBBox().y));
+
 
     });
     
@@ -377,18 +412,18 @@ function movePointerToY(yValue) {
     graph.focusText
       .text('')
       .append('tspan')
-      .attr('x', 210)
+      .attr('x', 220)
       .text("Зарплата: ")
       .attr("class", "suma-text");
     
     graph.focusText
       .append('tspan')
-      .text(selectedDataForGraph.income)
+      .text(selectedDataForGraph.income + " грн")
       .attr("class", "suma-numbers");
     
     graph.focusText
       .append('tspan')
-      .attr('x', 210)
+      .attr('x', 220)
       .attr('dy', '15')
       .text("Податок: ")
       .attr("class", "podatok-text tooltip");
@@ -402,18 +437,18 @@ function movePointerToY(yValue) {
     graph.focusText
       .append('tspan')
       .attr("class", "podatok-numbers-hrn")
-      .text(" " + selectedDataForGraph.sum + "₴");
+      .text(" " + selectedDataForGraph.sum + " грн");
     
     graph.focusText
       .append('tspan')
-      .attr('x', 210)
+      .attr('x', 220)
       .attr("class", "podatok-numbers-hrn-break")
-      .text(" " + selectedDataForGraph.sum + "₴")
+      .text(" " + selectedDataForGraph.sum + " грн")
       .attr('dy', '15px');
 
     graph.focusText
       .append('tspan')
-      .attr('x', 210)
+      .attr('x', 220)
       .attr('dy', '15')
       .text("На руки: ")
       .attr("class", "naruky-text");
@@ -421,7 +456,7 @@ function movePointerToY(yValue) {
     graph.focusText
       .append('tspan')
       .attr("class", "naruky-numbers")
-      .text(selectedDataForGraph.naRuky + "₴")
+      .text(selectedDataForGraph.naRuky + " грн")
       .attr('dy', '0px');
 
     graph.verticalLine

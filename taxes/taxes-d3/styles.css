@@ -401,3 +401,10 @@ p .sum {
   color: rgb(103, 82, 48);
 }
 
+#fop1 .info-group {
+  visibility: visible !important;
+}
+
+.info-group text {
+  font-style: italic;
+}
