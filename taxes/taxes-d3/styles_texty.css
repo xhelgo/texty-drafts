@@ -394,3 +394,8 @@ p .sum {
 .info-group text {
   font-style: italic;
 }
+
+#info p {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
