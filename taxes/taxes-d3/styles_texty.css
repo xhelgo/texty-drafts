@@ -1,0 +1,396 @@
+﻿/* 5 */
+@media (min-width: 1300px) {
+
+  .container {
+    margin: auto;
+    width: 100%;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+  
+  .chart:not(:nth-child(1)) {
+    .y-ticks {
+      display: none;
+    }
+    
+    .x-axis-label {
+      display: none;
+    }
+    
+    .y-axis-label {
+      display: none;
+    }
+    
+    .suma-text,
+    .podatok-text,
+    .naruky-text {
+      visibility: hidden;
+    }
+  }
+}
+
+/* 4 + 1 */
+@media (min-width: 1140px) and (max-width: 1299px) {
+
+  .container {
+    margin: auto;
+    width: 100%;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  
+  .chart:not(:nth-child(1)):not(:nth-child(5)) {
+    .y-ticks {
+      display: none;
+    }
+    
+    .x-axis-label {
+      display: none;
+    }
+    
+    .y-axis-label {
+      display: none;
+    }
+  }
+
+}
+
+/* 3 + 2 */
+@media (min-width: 865px) and (max-width: 1139px) {
+  .container {
+    margin: auto;
+    width: 100%;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  
+  .chart:not(:nth-child(1)):not(:nth-child(4)) {
+    .y-ticks {
+      display: none;
+    }
+    
+    .x-axis-label {
+      display: none;
+    }
+    
+    .y-axis-label {
+      display: none;
+    }
+    
+    .suma-text,
+    .podatok-text,
+    .naruky-text {
+      visibility: hidden;
+    }
+  }
+
+}
+
+/* 2 + 2 + 1 */
+@media (min-width: 600px) and (max-width: 864px) {
+  .container {
+    margin: auto;
+    width: 100%;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    }
+  
+  .chart:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(5)) {
+    .y-ticks {
+      display: none;
+    }
+    
+    .x-axis-label {
+      display: none;
+    }
+    
+    .y-axis-label {
+      display: none;
+    }
+    
+    .suma-text,
+    .podatok-text,
+    .naruky-text {
+      visibility: hidden;
+    }
+  }
+
+}
+
+/* 1 + 1 + 1 + 1 + 1 */
+@media (max-width: 599px) {
+  .container {
+    margin: auto;
+    width: 100%;
+  }
+
+  .charts {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+.chart:not(:nth-child(1)) {
+  .suma-text,
+  .podatok-text,
+  .naruky-text {
+    visibility: hidden;
+  }
+}
+
+.chart svg {
+  touch-action: none;
+}
+
+
+.tick line {
+  display: none;
+}
+
+.y-axis-label,
+.x-axis-label {
+  font-size: 12px;
+  font-family: Inter;
+}
+
+.x-axis-label {
+  background-color: white;
+}
+
+.title {
+  fill: rgb(103, 82, 48);
+  font-family: Inter;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.suma-text,
+.podatok-text,
+.naruky-text {
+  font-family: Inter;
+  font-size: 14px;
+}
+
+.suma-numbers,
+.podatok-numbers,
+.podatok-numbers-hrn,
+.podatok-numbers-hrn-break,
+.naruky-numbers,
+.limit-hover {
+  fill: rgb(237, 34, 56) !important;
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.limit-hover {
+  font-weight: 600;
+}
+
+
+.header {
+  margin: 0 30px;
+  max-width: 800px;
+  margin-bottom: 30px;
+}
+
+.content {
+  position: relative;
+  padding-left: 50px;
+}
+
+.content button{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50px;
+  height: 25px;
+  border: none;
+}
+
+p .calculation {
+  font-weight: 500;
+  background-color: #FFFAEC;
+  color: #ED2238;
+  padding: 2px;
+}
+
+p .sum {
+  font-weight: 500;
+  color: #ED2238;
+}
+
+
+.input {
+  position: sticky;
+  z-index: 3;
+  top: 0;
+  background-color: white;
+}
+
+#inputField {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+}
+
+#inputField label {
+  order: 1;
+  margin-left: 30px;
+  margin-bottom: 5px;
+  margin-top: 10px;
+
+  color: rgb(103, 82, 48);
+
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 450;
+}
+
+#inputField input[type="text"] {
+  order: 2;
+  margin-left: 30px;
+  margin-bottom: 15px;
+
+  height: 30px;
+  padding-left: 5px;
+
+  border: 1.5px solid rgb(103, 82, 48);
+  background-color: transparent;
+
+  color: rgb(237, 34, 56);
+  font-family: Inter;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+.pointer,
+.horizontal-line,
+.vertical-line,
+.line2 {
+  pointer-events: none;
+}
+
+.condition {
+  height: 100%;
+  width: 100%;
+  fill: black;
+}
+
+.chart {
+  position: relative;
+  z-index: 1;
+}
+
+.limit-message {
+  display: none;
+  position: absolute;
+  top: 30px;
+  right: 0;
+  bottom: 0;
+  left: 30px;
+  z-index: 2;
+
+  height: 65%;
+  width: 190px;
+  background-color: rgba(255, 255, 255, 0.5);
+
+  padding: 20px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  /* Add this line to create a blur effect */
+  backdrop-filter: blur(20px);
+}
+
+.limit-message {
+  font-family: Inter;
+  font-size: 14px;
+  font-weight: 500;
+  color: rgb(103, 82, 48);
+}
+
+#pdfo .podatok-numbers-hrn {
+  display: none;
+}
+
+.podatok-numbers-hrn-break {
+  display: none;
+}
+
+#pdfo .podatok-numbers-hrn-break {
+  display: inline;
+}
+
+.collapsible {
+  background-color: #675230;
+  color: white;
+  cursor: pointer;
+  padding: 12px;
+  width: 230px;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-family: Inter;
+  font-size: 14px;
+  transition: width 0.2s ease-out;
+}
+
+.active, .collapsible:hover {
+  background-color: #796038;
+}
+
+.collapsible:after {
+  content: '\002B';
+  color: white;
+  font-weight: bold;
+  float: right;
+  margin-left: 5px;
+}
+
+.active:after {
+  content: "\2212";
+}
+
+.content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.caption-text {
+  display: none; 
+}
+
+#pdfo .caption-text {
+  display: inline;
+  font-family: Inter;
+  font-size: 10px;
+  font-weight: 500;
+  color: rgb(103, 82, 48);
+}
+
+#fop1 .info-group {
+  visibility: visible !important;
+}
+
+.info-group text {
+  font-style: italic;
+}
