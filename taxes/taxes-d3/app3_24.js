@@ -6,7 +6,7 @@ let data3 = [];
 let data4 = [];
 let data5 = [];
 
-for (let i = 6100; i <= 1000000;) {
+for (let i = 7100; i <= 1000000;) {
   let result1 = taxesCalculator(i, '1');
   let result2 = taxesCalculator(i, '2');
   let result3 = taxesCalculator(i, '3');
@@ -50,18 +50,6 @@ function createGraph(data, title, elementId, limit) {
     .style("class", "chart-background");
 
   let padding = 10;
-
-  // Add X axis
-  // let maxRate = d3.max(data, d => parseFloat(d.rate));
-
-  // let domainEnd = maxRate;
-  // if (maxRate > 60) {
-  //   domainEnd = maxRate - 10;
-  // } else if (maxRate == data4[0].rate) {
-  //   domainEnd = 40;
-  // } else {
-  //   domainEnd = maxRate - 5;
-  // }
   
   let x = d3.scaleLinear()
     .domain([0, 45])
@@ -117,13 +105,10 @@ function createGraph(data, title, elementId, limit) {
     .attr("y", padding - 15) // Position the text at the top of the SVG, below the padding
     .text(title);
 
-  // filter data to remove the values below 7100
-  let filteredData = data.filter(d => d.income >= 7100);
-
   // Add the chart line
   svg
     .append("path")
-    .datum(filteredData) // Use the filtered data
+    .datum(data) // Use the filtered data
     .attr("class", "line")
     .attr("fill", "none")
     .attr("stroke", "steelblue")
@@ -255,7 +240,8 @@ function createGraph(data, title, elementId, limit) {
     .attr("alignment-baseline", "middle")
     .attr("x", 7.5) // Position at the right edge of the SVG
     .attr("y", height-12.5) // Position at the top of the SVG
-    .text("Річний ліміт вичерпано");
+    .text("Річний ліміт вичерпано")
+    .style("pointer-events", "none");
 
   function mousemove() {
     // recover coordinate we need
@@ -329,15 +315,6 @@ function createGraph(data, title, elementId, limit) {
         .text(" " + selectedDataForGraph.sum + " грн")
         .attr('dy', '15px');
 
-      // let text = selectedDataForGraph.sum;
-
-      // graph.focusText
-      //   .append('tspan')
-      //   .attr('x', 220)
-      //   .attr('dy', '7.5')
-      //   .text("_".repeat(10))
-      //   .attr("class", "naruky-numbers");
-
       graph.focusText
         .append('tspan')
         .attr('x', 220)
@@ -374,13 +351,6 @@ function createGraph(data, title, elementId, limit) {
           this.style.display = 'none';
         };
       });
-
-      // infoCircle
-      // .attr("cx", graph.x(d3.select('.suma-text').node().getBBox().y));
-    
-      // infoText
-      //   .attr("cx", graph.x(d3.select('.suma-text').node().getBBox().y));
-
 
     });
     
