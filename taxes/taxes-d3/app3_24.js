@@ -26,6 +26,11 @@ for (let i = 7100; i <= 1000000;) {
   }
 }
 
+function formatNumber(num) {
+  var numStr = num.toString();
+  return numStr.length < 5 ? numStr : numStr.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
 function createGraph(data, title, elementId, limit) {
   // set the dimensions and margins of the graph
   let margin = {top: 30, right: 30, bottom: 30, left: 30},
@@ -163,12 +168,12 @@ function createGraph(data, title, elementId, limit) {
     .append('circle')
     .style("fill", "#ED2238")
     .attr('r', 7)
-    .attr("cx", 68)
+    .attr("cx", 64)
     .attr("cy", 14);
   
   let infoText = infoGroup
     .append('text')
-    .attr("x", 68)
+    .attr("x", 64)
     .attr("y", 14)
     .attr("dy", ".35em")
     .text("i")
@@ -287,7 +292,7 @@ function createGraph(data, title, elementId, limit) {
       
       graph.focusText
         .append('tspan')
-        .text(selectedDataForGraph.income + " грн")
+        .text(formatNumber(selectedDataForGraph.income) + " грн")
         .attr("class", "suma-numbers");
       
       graph.focusText
@@ -306,13 +311,13 @@ function createGraph(data, title, elementId, limit) {
       graph.focusText
         .append('tspan')
         .attr("class", "podatok-numbers-hrn")
-        .text(" " + selectedDataForGraph.sum + " грн");
+        .text(" " + formatNumber(selectedDataForGraph.sum) + " грн");
       
       graph.focusText
         .append('tspan')
         .attr('x', 220)
         .attr("class", "podatok-numbers-hrn-break")
-        .text(" " + selectedDataForGraph.sum + " грн")
+        .text(" " + formatNumber(selectedDataForGraph.sum) + " грн")
         .attr('dy', '15px');
 
       graph.focusText
@@ -325,7 +330,7 @@ function createGraph(data, title, elementId, limit) {
       graph.focusText
         .append('tspan')
         .attr("class", "naruky-numbers")
-        .text(selectedDataForGraph.naRuky + " грн")
+        .text(formatNumber(selectedDataForGraph.naRuky) + " грн")
         .attr('dy', '0px');
 
 
@@ -388,7 +393,7 @@ function movePointerToY(yValue) {
     
     graph.focusText
       .append('tspan')
-      .text(selectedDataForGraph.income + " грн")
+      .text(formatNumber(selectedDataForGraph.income) + " грн")
       .attr("class", "suma-numbers");
     
     graph.focusText
@@ -407,13 +412,13 @@ function movePointerToY(yValue) {
     graph.focusText
       .append('tspan')
       .attr("class", "podatok-numbers-hrn")
-      .text(" " + selectedDataForGraph.sum + " грн");
+      .text(" " + formatNumber(selectedDataForGraph.sum) + " грн");
     
     graph.focusText
       .append('tspan')
       .attr('x', 220)
       .attr("class", "podatok-numbers-hrn-break")
-      .text(" " + selectedDataForGraph.sum + " грн")
+      .text(" " + formatNumber(selectedDataForGraph.sum) + " грн")
       .attr('dy', '15px');
 
     graph.focusText
@@ -426,7 +431,7 @@ function movePointerToY(yValue) {
     graph.focusText
       .append('tspan')
       .attr("class", "naruky-numbers")
-      .text(selectedDataForGraph.naRuky + " грн")
+      .text(formatNumber(selectedDataForGraph.naRuky) + " грн")
       .attr('dy', '0px');
 
     graph.verticalLine
