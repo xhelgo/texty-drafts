@@ -508,7 +508,7 @@ let graphs = [
   createGraph(data2, "ФОП 2-ї групи", "#fop2", 5921400),
   createGraph(data3, "ФОП 3-ї групи", "#fop3", 8285700),
   createGraph(data4, "Зарплата", "#pdfo", 12000000),
-  createGraph(data5, "ДІЯ.City", "#diia", 10079040)
+  createGraph(data5, "Дія City", "#diia", 10079040)
 ];
 
 // Set the default pointer value on page load
