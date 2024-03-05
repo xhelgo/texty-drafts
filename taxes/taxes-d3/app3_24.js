@@ -13,11 +13,11 @@ for (let i = 7100; i <= 1000000;) {
   let result4 = taxesCalculator(i, 'pdfo');
   let result5 = taxesCalculator(i, 'diia');
 
-  data1.push({rate: (result1.rate * 100).toFixed(2), income: i, sum: (result1.sum).toFixed(0), naRuky: (result1.naRuky).toFixed(0)});
-  data2.push({rate: (result2.rate * 100).toFixed(2), income: i, sum: (result2.sum).toFixed(0), naRuky: (result2.naRuky).toFixed(0)});
-  data3.push({rate: (result3.rate * 100).toFixed(2), income: i, sum: (result3.sum).toFixed(0), naRuky: (result3.naRuky).toFixed(0)});
-  data4.push({rate: (result4.rate * 100).toFixed(2), income: i, sum: (result4.sum).toFixed(0), naRuky: (result4.naRuky).toFixed(0)});
-  data5.push({rate: (result5.rate * 100).toFixed(2), income: i, sum: (result5.sum).toFixed(0), naRuky: (result5.naRuky).toFixed(0)});
+  data1.push({rate: (result1.rate * 100).toFixed(2), income: i, sum: Number((result1.sum).toFixed(0)), naRuky: Number((result1.naRuky).toFixed(0))});
+  data2.push({rate: (result2.rate * 100).toFixed(2), income: i, sum: Number((result2.sum).toFixed(0)), naRuky: Number((result1.naRuky).toFixed(0))});
+  data3.push({rate: (result3.rate * 100).toFixed(2), income: i, sum: Number((result3.sum).toFixed(0)), naRuky: Number((result1.naRuky).toFixed(0))});
+  data4.push({rate: (result4.rate * 100).toFixed(2), income: i, sum: Number((result4.sum).toFixed(0)), naRuky: Number((result1.naRuky).toFixed(0))});
+  data5.push({rate: (result5.rate * 100).toFixed(2), income: i, sum: Number((result5.sum).toFixed(0)), naRuky: Number((result1.naRuky).toFixed(0))});
 
   if (i === 7100) {
     i += 900;
@@ -52,7 +52,7 @@ function createGraph(data, title, elementId, limit) {
   let padding = 10;
   
   let x = d3.scaleLinear()
-    .domain([0, 45])
+    .domain([0, 47])
     .range([padding, width - padding]);
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -72,7 +72,7 @@ function createGraph(data, title, elementId, limit) {
     .attr("class", "x-axis-label") // Add the class
     .attr("text-anchor", "start") // this makes it easy to centre the text as the transform is applied to the anchor
     .attr("transform", "translate(" + padding + "," + (height + margin.bottom - 14) + ")") // text is drawn off the screen top left, move down and out and rotate
-    .text("Відсоток:");
+    .text("Відсоток");
   
   // Add Y axis
   let y = d3.scaleLog()
@@ -91,7 +91,7 @@ function createGraph(data, title, elementId, limit) {
     .attr("class", "y-axis-label") // Add the class
     .attr("text-anchor", "start") // this makes it easy to centre the text as the transform is applied to the anchor
     .attr("transform", "translate(" + (margin.left - padding - 50) + "," + (padding - 15) + ")") // text is drawn off the screen top left, move down and out and rotate
-    .text("ЗП, \n тис. грн:");
+    .text("ЗП, \n тис. грн");
 
   // Recolor axes tick labels
   svg.selectAll(".tick text")
@@ -163,12 +163,12 @@ function createGraph(data, title, elementId, limit) {
     .append('circle')
     .style("fill", "#ED2238")
     .attr('r', 7)
-    .attr("cx", 68)
+    .attr("cx", 65)
     .attr("cy", 14);
   
   let infoText = infoGroup
     .append('text')
-    .attr("x", 68)
+    .attr("x", 64)
     .attr("y", 14)
     .attr("dy", ".35em")
     .text("i")
@@ -196,7 +196,7 @@ function createGraph(data, title, elementId, limit) {
   pfdoCaption
     .append('tspan')
     .attr('x', 10)
-    .text("*розраховано податок на")
+    .text("*Розраховано податок на")
     .attr("class", "caption-text");
 
   pfdoCaption
@@ -209,7 +209,7 @@ function createGraph(data, title, elementId, limit) {
   pfdoCaption
   .append('tspan')
   .attr('x', 10)
-  .text("та податок, який платить")
+  .text("і податок, який платить")
   .attr('dy', '12.5')
   .attr("class", "caption-text");
 
@@ -287,7 +287,7 @@ function createGraph(data, title, elementId, limit) {
       
       graph.focusText
         .append('tspan')
-        .text(selectedDataForGraph.income + " грн")
+        .text((selectedDataForGraph.income >= 10000 ? selectedDataForGraph.income.toLocaleString('uk-UA') : selectedDataForGraph.income) + " грн")
         .attr("class", "suma-numbers");
       
       graph.focusText
@@ -306,13 +306,14 @@ function createGraph(data, title, elementId, limit) {
       graph.focusText
         .append('tspan')
         .attr("class", "podatok-numbers-hrn")
-        .text(" " + selectedDataForGraph.sum + " грн");
+        .text(" " + (selectedDataForGraph.sum >= 10000 ? selectedDataForGraph.sum.toLocaleString('uk-UA') : selectedDataForGraph.sum) + " грн");
+
       
       graph.focusText
         .append('tspan')
         .attr('x', 220)
         .attr("class", "podatok-numbers-hrn-break")
-        .text(" " + selectedDataForGraph.sum + " грн")
+        .text(" " + (selectedDataForGraph.sum >= 10000 ? selectedDataForGraph.sum.toLocaleString('uk-UA') : selectedDataForGraph.sum) + " грн")
         .attr('dy', '15px');
 
       graph.focusText
@@ -325,7 +326,7 @@ function createGraph(data, title, elementId, limit) {
       graph.focusText
         .append('tspan')
         .attr("class", "naruky-numbers")
-        .text(selectedDataForGraph.naRuky + " грн")
+        .text((selectedDataForGraph.naRuky >= 10000 ? selectedDataForGraph.naRuky.toLocaleString('uk-UA') : selectedDataForGraph.naRuky) + " грн")
         .attr('dy', '0px');
 
 
@@ -388,7 +389,7 @@ function movePointerToY(yValue) {
     
     graph.focusText
       .append('tspan')
-      .text(selectedDataForGraph.income + " грн")
+      .text((selectedDataForGraph.income >= 10000 ? selectedDataForGraph.income.toLocaleString('uk-UA') : selectedDataForGraph.income) + " грн")
       .attr("class", "suma-numbers");
     
     graph.focusText
@@ -407,13 +408,15 @@ function movePointerToY(yValue) {
     graph.focusText
       .append('tspan')
       .attr("class", "podatok-numbers-hrn")
-      .text(" " + selectedDataForGraph.sum + " грн");
+      .text(" " + (selectedDataForGraph.sum >= 10000 ? selectedDataForGraph.sum.toLocaleString('uk-UA') : selectedDataForGraph.sum) + " грн");
+      // check the type of the number
+      console.log(typeof selectedDataForGraph.sum);
     
     graph.focusText
       .append('tspan')
       .attr('x', 220)
       .attr("class", "podatok-numbers-hrn-break")
-      .text(" " + selectedDataForGraph.sum + " грн")
+      .text(" " + (selectedDataForGraph.sum >= 10000 ? selectedDataForGraph.sum.toLocaleString('uk-UA') : selectedDataForGraph.sum) + " грн")
       .attr('dy', '15px');
 
     graph.focusText
@@ -426,7 +429,7 @@ function movePointerToY(yValue) {
     graph.focusText
       .append('tspan')
       .attr("class", "naruky-numbers")
-      .text(selectedDataForGraph.naRuky + " грн")
+      .text((selectedDataForGraph.naRuky >= 10000 ? selectedDataForGraph.naRuky.toLocaleString('uk-UA') : selectedDataForGraph.naRuky) + " грн")
       .attr('dy', '0px');
 
     graph.verticalLine
@@ -504,9 +507,9 @@ function handleSubmit(event) {
 document.getElementById('inputField').addEventListener('submit', handleSubmit);
 
 let graphs = [
-  createGraph(data1, "ФОП 1", "#fop1", 1185700),
-  createGraph(data2, "ФОП 2", "#fop2", 5921400),
-  createGraph(data3, "ФОП 3", "#fop3", 8285700),
+  createGraph(data1, "ФОП 1-ї групи", "#fop1", 1185700),
+  createGraph(data2, "ФОП 2-ї групи", "#fop2", 5921400),
+  createGraph(data3, "ФОП 3-ї групи", "#fop3", 8285700),
   createGraph(data4, "Зарплата", "#pdfo", 12000000),
   createGraph(data5, "ДІЯ.City", "#diia", 10079040)
 ];
