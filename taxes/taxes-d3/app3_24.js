@@ -163,7 +163,7 @@ function createGraph(data, title, elementId, limit) {
     .append('circle')
     .style("fill", "#ED2238")
     .attr('r', 7)
-    .attr("cx", 65)
+    .attr("cx", 64)
     .attr("cy", 14);
   
   let infoText = infoGroup
