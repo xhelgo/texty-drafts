@@ -13,11 +13,11 @@ for (let i = 7100; i <= 1000000;) {
   let result4 = taxesCalculator(i, 'pdfo');
   let result5 = taxesCalculator(i, 'diia');
 
-  data1.push({rate: (result1.rate * 100).toFixed(2), income: i, sum: Number((result1.sum).toFixed(0)), naRuky: Number((result1.naRuky).toFixed(0))});
-  data2.push({rate: (result2.rate * 100).toFixed(2), income: i, sum: Number((result2.sum).toFixed(0)), naRuky: Number((result1.naRuky).toFixed(0))});
-  data3.push({rate: (result3.rate * 100).toFixed(2), income: i, sum: Number((result3.sum).toFixed(0)), naRuky: Number((result1.naRuky).toFixed(0))});
-  data4.push({rate: (result4.rate * 100).toFixed(2), income: i, sum: Number((result4.sum).toFixed(0)), naRuky: Number((result1.naRuky).toFixed(0))});
-  data5.push({rate: (result5.rate * 100).toFixed(2), income: i, sum: Number((result5.sum).toFixed(0)), naRuky: Number((result1.naRuky).toFixed(0))});
+  data1.push({rate: (result1.rate * 100).toFixed(2), income: i, sum: (result1.sum).toFixed(0), naRuky: (result1.naRuky).toFixed(0)});
+  data2.push({rate: (result2.rate * 100).toFixed(2), income: i, sum: (result2.sum).toFixed(0), naRuky: (result2.naRuky).toFixed(0)});
+  data3.push({rate: (result3.rate * 100).toFixed(2), income: i, sum: (result3.sum).toFixed(0), naRuky: (result3.naRuky).toFixed(0)});
+  data4.push({rate: (result4.rate * 100).toFixed(2), income: i, sum: (result4.sum).toFixed(0), naRuky: (result4.naRuky).toFixed(0)});
+  data5.push({rate: (result5.rate * 100).toFixed(2), income: i, sum: (result5.sum).toFixed(0), naRuky: (result5.naRuky).toFixed(0)});
 
   if (i === 7100) {
     i += 900;
@@ -52,7 +52,7 @@ function createGraph(data, title, elementId, limit) {
   let padding = 10;
   
   let x = d3.scaleLinear()
-    .domain([0, 47])
+    .domain([0, 45])
     .range([padding, width - padding]);
   svg.append("g")
     .attr("transform", "translate(0," + height + ")")
@@ -163,12 +163,12 @@ function createGraph(data, title, elementId, limit) {
     .append('circle')
     .style("fill", "#ED2238")
     .attr('r', 7)
-    .attr("cx", 64)
+    .attr("cx", 68)
     .attr("cy", 14);
   
   let infoText = infoGroup
     .append('text')
-    .attr("x", 64)
+    .attr("x", 68)
     .attr("y", 14)
     .attr("dy", ".35em")
     .text("i")
@@ -287,7 +287,7 @@ function createGraph(data, title, elementId, limit) {
       
       graph.focusText
         .append('tspan')
-        .text((selectedDataForGraph.income >= 10000 ? selectedDataForGraph.income.toLocaleString('uk-UA') : selectedDataForGraph.income) + " грн")
+        .text(selectedDataForGraph.income + " грн")
         .attr("class", "suma-numbers");
       
       graph.focusText
@@ -306,14 +306,13 @@ function createGraph(data, title, elementId, limit) {
       graph.focusText
         .append('tspan')
         .attr("class", "podatok-numbers-hrn")
-        .text(" " + (selectedDataForGraph.sum >= 10000 ? selectedDataForGraph.sum.toLocaleString('uk-UA') : selectedDataForGraph.sum) + " грн");
-
+        .text(" " + selectedDataForGraph.sum + " грн");
       
       graph.focusText
         .append('tspan')
         .attr('x', 220)
         .attr("class", "podatok-numbers-hrn-break")
-        .text(" " + (selectedDataForGraph.sum >= 10000 ? selectedDataForGraph.sum.toLocaleString('uk-UA') : selectedDataForGraph.sum) + " грн")
+        .text(" " + selectedDataForGraph.sum + " грн")
         .attr('dy', '15px');
 
       graph.focusText
@@ -326,7 +325,7 @@ function createGraph(data, title, elementId, limit) {
       graph.focusText
         .append('tspan')
         .attr("class", "naruky-numbers")
-        .text((selectedDataForGraph.naRuky >= 10000 ? selectedDataForGraph.naRuky.toLocaleString('uk-UA') : selectedDataForGraph.naRuky) + " грн")
+        .text(selectedDataForGraph.naRuky + " грн")
         .attr('dy', '0px');
 
 
@@ -389,7 +388,7 @@ function movePointerToY(yValue) {
     
     graph.focusText
       .append('tspan')
-      .text((selectedDataForGraph.income >= 10000 ? selectedDataForGraph.income.toLocaleString('uk-UA') : selectedDataForGraph.income) + " грн")
+      .text(selectedDataForGraph.income + " грн")
       .attr("class", "suma-numbers");
     
     graph.focusText
@@ -408,15 +407,13 @@ function movePointerToY(yValue) {
     graph.focusText
       .append('tspan')
       .attr("class", "podatok-numbers-hrn")
-      .text(" " + (selectedDataForGraph.sum >= 10000 ? selectedDataForGraph.sum.toLocaleString('uk-UA') : selectedDataForGraph.sum) + " грн");
-      // check the type of the number
-      console.log(typeof selectedDataForGraph.sum);
+      .text(" " + selectedDataForGraph.sum + " грн");
     
     graph.focusText
       .append('tspan')
       .attr('x', 220)
       .attr("class", "podatok-numbers-hrn-break")
-      .text(" " + (selectedDataForGraph.sum >= 10000 ? selectedDataForGraph.sum.toLocaleString('uk-UA') : selectedDataForGraph.sum) + " грн")
+      .text(" " + selectedDataForGraph.sum + " грн")
       .attr('dy', '15px');
 
     graph.focusText
@@ -429,7 +426,7 @@ function movePointerToY(yValue) {
     graph.focusText
       .append('tspan')
       .attr("class", "naruky-numbers")
-      .text((selectedDataForGraph.naRuky >= 10000 ? selectedDataForGraph.naRuky.toLocaleString('uk-UA') : selectedDataForGraph.naRuky) + " грн")
+      .text(selectedDataForGraph.naRuky + " грн")
       .attr('dy', '0px');
 
     graph.verticalLine
