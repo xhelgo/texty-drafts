@@ -168,12 +168,12 @@ function createGraph(data, title, elementId, limit) {
     .append('circle')
     .style("fill", "#ED2238")
     .attr('r', 7)
-    .attr("cx", 90)
+    .attr("cx", 85)
     .attr("cy", 14);
   
   let infoText = infoGroup
     .append('text')
-    .attr("x", 90)
+    .attr("x", 85)
     .attr("y", 14)
     .attr("dy", ".35em")
     .text("i")
@@ -287,7 +287,7 @@ function createGraph(data, title, elementId, limit) {
         .text('')
         .append('tspan')
         .attr('x', 220)
-        .text("Оклад: ")
+        .text("Оклад*: ")
         .attr("class", "suma-text");
       
       graph.focusText
@@ -388,7 +388,7 @@ function movePointerToY(yValue) {
       .text('')
       .append('tspan')
       .attr('x', 220)
-      .text("Оклад: ")
+      .text("Оклад*: ")
       .attr("class", "suma-text");
     
     graph.focusText
