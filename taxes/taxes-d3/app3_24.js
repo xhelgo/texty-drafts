@@ -168,12 +168,12 @@ function createGraph(data, title, elementId, limit) {
     .append('circle')
     .style("fill", "#ED2238")
     .attr('r', 7)
-    .attr("cx", 64)
+    .attr("cx", 90)
     .attr("cy", 14);
   
   let infoText = infoGroup
     .append('text')
-    .attr("x", 64)
+    .attr("x", 90)
     .attr("y", 14)
     .attr("dy", ".35em")
     .text("i")
