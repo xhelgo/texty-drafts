@@ -287,7 +287,7 @@ function createGraph(data, title, elementId, limit) {
         .text('')
         .append('tspan')
         .attr('x', 220)
-        .text("Зарплата: ")
+        .text("Оклад: ")
         .attr("class", "suma-text");
       
       graph.focusText
@@ -388,7 +388,7 @@ function movePointerToY(yValue) {
       .text('')
       .append('tspan')
       .attr('x', 220)
-      .text("Зарплата: ")
+      .text("Оклад: ")
       .attr("class", "suma-text");
     
     graph.focusText
